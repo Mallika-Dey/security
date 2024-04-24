@@ -24,7 +24,7 @@ public class User implements UserDetails {
 
     //add multiple role
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private ERole role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

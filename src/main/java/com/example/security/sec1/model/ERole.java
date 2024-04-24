@@ -1,5 +1,5 @@
 package com.example.security.sec1.model;
 
-public enum Role {
+public enum ERole {
     ADMIN,USER
 }
