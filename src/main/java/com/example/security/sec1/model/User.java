@@ -1,18 +1,18 @@
 package com.example.security.sec1.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements UserDetails {
@@ -23,12 +23,24 @@ public class User implements UserDetails {
     private String password;
 
     //add multiple role
-    @Enumerated(EnumType.STRING)
-    private ERole role;
+//    @Enumerated(EnumType.STRING)
+//    private ERole role;
+
+    @ManyToMany
+    @JoinTable(
+            name = "users_permissions",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+    private List<Permission> permissions;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + role.toString()));
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        for (Permission permission : permissions)
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + permission.getRoleName()));
+        return authorities;
     }
 
     @Override
