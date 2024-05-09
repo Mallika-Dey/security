@@ -19,27 +19,21 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true)
     private String email;
     private String password;
 
-    //add multiple role
-//    @Enumerated(EnumType.STRING)
-//    private ERole role;
-
-    @ManyToMany
-    @JoinTable(
-            name = "users_permissions",
-            joinColumns = @JoinColumn(
-                    name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id"))
-    private List<Permission> permissions;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<UserFeaturePermission> userFeaturePermissions;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for (Permission permission : permissions)
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + permission.getRoleName()));
+        for (UserFeaturePermission permission : userFeaturePermissions)
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + permission.getFeature().getFeatureName()
+                    + permission.getPermission().getPermissionName()));
         return authorities;
     }
 

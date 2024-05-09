@@ -1,9 +1,7 @@
 package com.example.security.sec1.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -11,14 +9,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Permission {
+public class Feature {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique=true)
-    private String permissionName;
+    private String featureName;
 
-    @OneToMany(mappedBy = "permission")
+    @OneToMany(mappedBy = "feature")
     private List<UserFeaturePermission> userFeaturePermissionList;
 }

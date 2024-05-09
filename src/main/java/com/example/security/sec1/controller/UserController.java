@@ -1,6 +1,7 @@
 package com.example.security.sec1.controller;
 
 import com.example.security.sec1.model.AuthenticationDTO;
+import com.example.security.sec1.model.FeaturePermissionDTO;
 import com.example.security.sec1.model.User;
 import com.example.security.sec1.model.UserDTO;
 import com.example.security.sec1.service.AuthenticationService;
@@ -30,10 +31,17 @@ public class UserController {
         return authenticationService.login(authenticationDTO);
     }
 
+    //it will be removed
     @GetMapping("/user/{id}")
-    @PreAuthorize("hasRole('READ')")
+    @PreAuthorize("hasRole('F1READ')")
     public UserDTO showUser(@PathVariable Long id) {
         log.info("user add data");
         return testService.callUser(id);
+    }
+
+    @PostMapping("/permission")
+    public String updatePermission(@RequestBody FeaturePermissionDTO featurePermissionDTO) {
+        log.info("giving permission to the user");
+        return testService.updatePermission(featurePermissionDTO);
     }
 }

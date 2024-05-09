@@ -37,6 +37,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                                 .requestMatchers(HttpMethod.POST, "/register", "/login").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/permission").hasRole("F1CREATE")
+                                .requestMatchers(HttpMethod.DELETE, "/permission").hasRole("F1DELETE")
                                 .requestMatchers("/v3/api-docs/**",
                                         "/configuration/ui",
                                         "/swagger-resources/**",
